@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+    <body onmousedown="mouseDown(event)" onmouseup="mouseUp()" onmousemove="mouseMove(event)">
+        <script src="js/three.js"></script>
+        <script src="js/GLTFLoaders.js"></script>
+		<script>
+            var mPreX = 0
+            var mPreY = 0
+            var mNewX = 0
+            var mNewY = 0
+            var isMD = false
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			/* var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );*/
+            var cube
+            var loader = new THREE.GLTFLoader()
+            loader.setCrossOrigin('')
+            loader.setPath('./model/')
+            // THREE.DRACOLoader.setDecoderPath( './examples' );
+            // loader.setDRACOLoader( new THREE.DRACOLoader() );
+            // THREE.DRACOLoader.getDecoderModule();
+
+            loader.load(
+                'scene.gltf',
+                function (gltf) {
+                    console.log(gltf)
+                    scene.add(gltf.scene)
+                },
+                // called while loading is progressing
+                undefined,
+                // called when loading has errors
+                function ( error ) {
+                    // console.log( error );
+                }
+            )
+
+			camera.position.z = 5;
+
+			/* var animate = function () {
+				requestAnimationFrame( animate );
+
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+
+				renderer.render( scene, camera );
+			};
+
+            animate(); */
+            toRender = () => {
+                renderer.render( scene, camera );
+            }
+
+            toRender()
+
+            mouseDown  = (event) => {
+                if (!isMD) {
+                    mPreX = event.pageX
+                    mPreY = event.pageY
+                    isMD = true
+                }
+            }
+
+            mouseUp = () => {
+                if (isMD) {
+                    isMD = false
+                }
+            }
+            
+            mouseMove = (event) => {
+                if (isMD) {
+                    mNewX = event.pageX
+                    mNewY = event.pageY
+                    rotaY = mNewX - mPreX
+                    rotaX = mNewY - mPreY
+                    if (rotaX < 0) {
+                        cube.rotation.x -= 0.05
+                    } else if (rotaX > 0) {
+                        cube.rotation.x += 0.05
+                    }
+                    if (rotaY < 0) {
+                        cube.rotation.y -= 0.05
+                    } else if (rotaY > 0) {
+                        cube.rotation.y += 0.05
+                    }
+                    toRender()
+                    mPreX = mNewX
+                    mPreY = mNewY
+                }
+            }
+		</script>
+	</body>
+</html>

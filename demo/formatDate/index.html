@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="index.js"></script>
+    <script src="myComp.js"></script>
+</head>
+<body>
+    <input type="button" value="改变时间模板" onclick="changeFormat()">
+    <input type="button" value="重置" onclick="reset()">
+    <div id="showTime"></div>
+    <div id="my-comp">
+        <input type="button" value="逆转信息" @click="changeText()"/>
+        {{message}}
+        <ul>
+            <list-item v-for="item of 10" :key="item" :item="item"></list-item>
+        </ul>
+    </div>
+    <todo-list-item></todo-list-item>
+</body>
+</html>
